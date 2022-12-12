@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+
+import 'Persons.dart';
 void main() => runApp(InsertDataTable());
-class Persons {
-  int ID, time, account, To;
-  double money, money2;
-  Persons(this.ID, this.account, this.To, this. time ,this.money, this.money2);
-}
+
 
 
 class InsertDataTable extends StatefulWidget {
@@ -14,8 +12,7 @@ class InsertDataTable extends StatefulWidget {
 
 class _InsertDataTableState extends State<InsertDataTable> {
   List<Persons> PersonsLst = <Persons>[
-    Persons(1, 0001, 0002, 3, 18, 30),
-    Persons(2, 0002, 0001, 4, 24, 30),
+
   ];
 
   final formKey = new GlobalKey<FormState>();
@@ -23,10 +20,10 @@ class _InsertDataTableState extends State<InsertDataTable> {
   var Account_Controller = new TextEditingController();
   var To_Controller = new TextEditingController();
   var Money_Controller = new TextEditingController();
-  var Money2_Controller = new TextEditingController();
+  var Name_Controller = new TextEditingController();
+  var LastName_Controller = new TextEditingController();
   var Time_Controller = new TextEditingController();
-
-  var lastID = 2;
+  var lastID = 0;
 
   @override
   void initState() {
@@ -44,11 +41,18 @@ class _InsertDataTableState extends State<InsertDataTable> {
       formKey.currentState!.save();
       String ID = ID_Controller.text;
       String A = Account_Controller.text;
-      String LN = To_Controller.text;
+      String name = Name_Controller.text;
       String M = Money_Controller.text;
-      String M2 = Money2_Controller.text;
-      String T = Time_Controller.text;
-      Persons p = Persons(int.parse(ID), int.parse(A), int.parse(LN), int.parse(T), double.parse(M), double.parse(M2));
+      String LastName =LastName_Controller.text;
+      int timestamp = DateTime.now().millisecondsSinceEpoch;
+
+      print(timestamp); //output: 1638592424384
+      int ts = 1638592424384;
+      DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(timestamp);
+      String datetime = tsdate.year.toString() + "/" + tsdate.month.toString() + "/" + tsdate.day.toString() + " " + tsdate.hour.toString() +":"+ tsdate.minute.toString() ;
+      print(datetime); //output: 2021/12/4
+      String T = datetime;
+      Persons p = Persons(int.parse(ID),  name.toString(),LastName.toString(),int.parse(A),  T.toString(), double.parse(M));
       PersonsLst.add(p);
       lastID++;
       refreshList();
@@ -87,10 +91,11 @@ class _InsertDataTableState extends State<InsertDataTable> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Number"),
+                    Text("Amount"),
                     TextField(
-                      controller: ID_Controller,
-                      enabled: false,
+                      controller: Money_Controller,
+                      keyboardType: TextInputType.text,
+                      enabled: true,
                     ),
                     Text("Account"),
                     TextFormField(
@@ -106,29 +111,20 @@ class _InsertDataTableState extends State<InsertDataTable> {
                       validator: (val) =>
                       val?.length == 0 ? 'Enter Person LastName' : null,
                     ),
-                    Text("Time"),
+                    Text("Name"),
                     TextFormField(
-                      controller: Time_Controller,
-                      keyboardType: TextInputType.number,
-                      validator: (val) => NotIntCheck(val)
-                          ? 'Enter sometime less then 24hrs'
-                          : null,
+                      controller: Name_Controller,
+                      keyboardType: TextInputType.text,
+                      validator: (val) =>
+                      val?.length == 0 ? 'Enter Person LastName' : null,
                     ),
-                    Text("Balance"),
+
+                    Text("LastName"),
                     TextFormField(
-                      controller: Money_Controller,
-                      keyboardType: TextInputType.number,
-                      validator: (val) => NotIntCheck(val)
-                          ? 'Enter Balance,Numbers Required'
-                          : null,
-                    ),
-                    Text("Balance2"),
-                    TextFormField(
-                      controller: Money2_Controller,
-                      keyboardType: TextInputType.number,
-                      validator: (val) => NotIntCheck(val)
-                          ? 'Enter Balance,Numbers Required'
-                          : null,
+                      controller: LastName_Controller,
+                      keyboardType: TextInputType.text,
+                      validator: (val) =>
+                      val?.length == 0 ? 'Enter Person LastName' : null,
                     ),
                     SizedBox(
                       width: double.infinity,
@@ -145,7 +141,60 @@ class _InsertDataTableState extends State<InsertDataTable> {
                         ),
                         onPressed: validate,
                       ),
+
                     ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MaterialButton(
+                        color: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Text(
+                          'Deposite',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: validate,
+                      ),
+
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MaterialButton(
+                        color: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Text(
+                          'Withdraw',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: validate,
+                      ),
+
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MaterialButton(
+                        color: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Text(
+                          'Send',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: validate,
+                      ),
+
+                    ),
+
                   ],
                 ),
               ),
@@ -161,16 +210,16 @@ class _InsertDataTableState extends State<InsertDataTable> {
                     label: Text("Account"),
                   ),
                   DataColumn(
-                    label: Text("To"),
-                  ),
-                  DataColumn(
                     label: Text("Time"),
                   ),
                   DataColumn(
                     label: Text("Balance"),
                   ),
                   DataColumn(
-                    label: Text("Balance2"),
+                    label: Text("Name"),
+                  ),
+                  DataColumn(
+                    label: Text("LastName"),
                   ),
                 ],
 
@@ -182,17 +231,17 @@ class _InsertDataTableState extends State<InsertDataTable> {
                     DataCell(
                       Text(p.account.toString()),
                     ),
-                    DataCell(
-                      Text(p.To.toString()),
-                    ),
                         DataCell(
                           Text(p.time.toString()),
                         ),
                     DataCell(
-                      Text("\$"+p.money.toString()),
+                      Text(p.money.toString()),
                     ),
                         DataCell(
-                          Text("\$"+p.money2.toString()),
+                          Text(p.name.toString()),
+                        ),
+                        DataCell(
+                          Text(p.lastName.toString()),
                         ),
                   ]),
                 ).toList(),
