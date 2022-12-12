@@ -173,7 +173,7 @@ class _InsertDataTableState extends State<InsertDataTable> {
     return MediaQuery(
       data: MediaQueryData(),
       child: MaterialApp(
-        // Make the home provide the scaffold instead of returning it for the Widget
+        // Make the home provide the scaffold instead of returning it for the Widget build
       home: Scaffold(        
         appBar: AppBar(
           title: Text("Banking app"),
