@@ -1,5 +1,5 @@
 {
-  "ssid": "Mybee168",
-  "password": "Bp0002715",
-  "atSign": "@acting29"
+  "ssid": "", // wifi name
+  "password": "", // wifi password
+  "atSign": "" // atSign key
 }
